@@ -106,6 +106,28 @@ AUTH_PASSWORD_VALIDATORS = [
 
 AUTH_USER_MODEL = 'custom_auth.User'
 
+AUTHENTICATION_BACKENDS = ['custom_auth.backend.AuthBackend']
+LOGIN_SUCCESS_URL = 'login:top'
+LOGIN_SUCCESS_ADMIN_URL = 'login:admin'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django.db.backends': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+    },
+}
+
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
