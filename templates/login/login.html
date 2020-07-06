@@ -1,8 +1,11 @@
 {% extends 'base.html' %}
 
+{% block title %} ログイン {% endblock %}
+
 {% block content %}
     <h1>ログインページ</h1>
 
+    {% include "../widget_validation_error.html" with errors=form.non_field_errors %}
     <form action="" method="POST">
 
         <input

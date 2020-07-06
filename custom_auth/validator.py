@@ -2,14 +2,14 @@ import re
 
 def is_valid_min_length(value: str, length: int) -> bool:
 
-    if len(str) < length:
+    if len(value) < length:
         return False
 
     return True
 
 def is_valid_max_length(value: str, length: int) -> bool:
 
-    if len(str) > length:
+    if len(value) > length:
         return False
 
     return True
