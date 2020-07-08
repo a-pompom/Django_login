@@ -1,9 +1,12 @@
+from __future__ import annotations
+
 from django.db import models
+from django.db.models import CharField, BooleanField
 from django.contrib.auth.models import AbstractBaseUser
 
+
 class User(AbstractBaseUser):
-    """
-    認証用ユーザ
+    """ 認証用ユーザ
     """
 
     class Meta:
@@ -11,19 +14,22 @@ class User(AbstractBaseUser):
 
     USERNAME_FIELD = 'username'
 
-    username: str = models.CharField(
+    # ユーザ名 ユニーク
+    username: CharField[str, str] = models.CharField(
         name='username',
         max_length=255,
-        unique=True
+        unique=True,
     )
 
-    password: str = models.CharField(
+    # パスワード
+    password: CharField[str, str] = models.CharField(
         name='password',
         max_length=255,
     )
 
-    is_admin: bool = models.BooleanField(
-        name='is_admin'
+    # 管理者か
+    is_admin: BooleanField[bool, bool] = models.BooleanField(
+        name='is_admin',
     )
 
     def __str__(self):

@@ -105,12 +105,16 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# 認証用ユーザ
+# セッションからも参照される
 AUTH_USER_MODEL = 'custom_auth.User'
 
+# 認証処理及びセッションの参照で利用するバックエンド
 AUTHENTICATION_BACKENDS = ['custom_auth.backend.AuthBackend']
+# ログイン後の遷移先
 LOGIN_SUCCESS_URL = 'login:top'
-LOGIN_SUCCESS_ADMIN_URL = 'login:admin'
 
+# SQLをプロット
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
