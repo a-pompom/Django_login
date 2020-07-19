@@ -24,7 +24,11 @@ class AuthBackend(BaseBackend):
             認証用ユーザ
         """
 
-        user = User.objects.get(id=user_id)
+        try:
+            user = User.objects.get(id=user_id)
+
+        except (User.DoesNotExist, ValueError):
+            return None
         
         return user
 
