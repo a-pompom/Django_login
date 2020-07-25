@@ -35,7 +35,7 @@ class TestAuthBackend:
 
             # GIVEN
             sut = AuthBackend()
-            invalid_user_id_list = ['invalid userid', -999, 1.5]
+            invalid_user_id_list = ['invalid userid', -999, 0]
 
             for invalid_user_id in invalid_user_id_list:
 

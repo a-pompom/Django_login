@@ -1,4 +1,4 @@
-from typing import Any, Optional
+from typing import Any, Optional, Union
 from custom_auth.exceptions import LoginFailureException
 from django.contrib.auth.backends import BaseBackend
 from django.contrib.auth.hashers import check_password
@@ -10,7 +10,7 @@ class AuthBackend(BaseBackend):
     """ 認証処理用バックエンド
     """
 
-    def get_user(self, user_id: int) -> User:
+    def get_user(self, user_id: int) -> Union[User, None]:
         """ セッションに格納されているユーザ識別用キーをもとにユーザモデルを取得
 
         Parameters
