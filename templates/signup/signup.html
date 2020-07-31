@@ -3,37 +3,43 @@
 {% block title %}ユーザ登録{% endblock %}
 
 {% block content %}
-    <h1>ユーザ登録ページ</h1>
+	<div class="Login">
+	
+		<header class="Header">
+            
+            <h2> Login App</h2>
+			
+		</header>
+		
+		<article class="Form">
+		
+			<form action="#" method="post">
+				
+                <input
+                    type="text"
+                    name="username"
+                    value="{{ form.username.value | default_if_none:'' }}"
+                    placeholder="ユーザ名"
+                    class="Input"
+                >
+                {% include "../widget_validation_error.html" with errors=form.username.errors %}
 
-
-    <form action="" method="POST">
-
-        <input
-            type="text"
-            name="username"
-            placeholder="ユーザ名"
-            value="{{ form.username.value | default_if_none:'' }}"
-        >
-        {% include "../widget_validation_error.html" with errors=form.username.errors %}
-
-        <br />
-
-        <input
-            type="password"
-            name="password"
-            placeholder="パスワード"
-            value="{{ form.password.value | default_if_none:'' }}"
-        >
-        {% include "../widget_validation_error.html" with errors=form.password.errors %}
-
-        <input
-            type="submit"
-            value="登録"
-        >
-
-        {% csrf_token %}
-
-    </form>
-
-
+                <input
+                    type="password"
+                    name="password"
+                    value="{{ form.password.value | default_if_none:'' }}"
+                    placeholder="パスワード"
+                    class="Input"
+                >
+                {% include "../widget_validation_error.html" with errors=form.password.errors %}
+				
+                <input 
+                    type="submit" 
+                    value="ユーザ登録"
+                    class="Button"
+				>
+                {% csrf_token %}
+			</form>
+		</article>
+	</div>
 {% endblock%}

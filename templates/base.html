@@ -1,8 +1,12 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html>
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}{% endblock%}</title>
+        <link rel="stylesheet" href="{% static 'style.css' %}">
+        <link rel="stylesheet" href="{% static 'assets/normalize.css' %}">
     </head>
 
     <body>

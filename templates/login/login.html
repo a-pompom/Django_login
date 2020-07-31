@@ -3,33 +3,40 @@
 {% block title %}ログイン{% endblock %}
 
 {% block content %}
-    <h1>ログインページ</h1>
+	<div class="Login">
+	
+		<header class="Header">
+            
+            <h2> Login App</h2>
+			
+		</header>
+		
+		<article class="Form">
+		
+            {% include "../widget_validation_error.html" with errors=form.non_field_errors %}
+			<form action="#" method="post">
+				
+                <input
+                    type="text"
+                    name="username"
+                    placeholder="ユーザ名"
+                    class="Input"
+                >
 
-    {% include "../widget_validation_error.html" with errors=form.non_field_errors %}
-    <form action="" method="POST">
-
-        <input
-            type="text"
-            name="username"
-            placeholder="ユーザ名"
-        >
-
-        <br />
-
-        <input
-            type="password"
-            name="password"
-            placeholder="パスワード"
-        >
-
-        <input
-            type="submit"
-            value="ログイン"
-        >
-
-        {% csrf_token %}
-
-    </form>
-
-
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="パスワード"
+                    class="Input"
+                >
+				
+                <input 
+                    type="submit" 
+                    value="ログイン"
+                    class="Button"
+				>
+                {% csrf_token %}
+			</form>
+		</article>
+	</div>
 {% endblock%}

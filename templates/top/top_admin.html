@@ -3,6 +3,25 @@
 {% block title %}管理者TOP{% endblock %}
 
 {% block content %}
-    <h1>Admin Top</h1>
-    <a href="{% url 'login:logout' %}">Logout</a>
+	<div class="Login">
+	
+		<header class="Header">
+            
+            <h2> Admin Top</h2>
+			
+		</header>
+		
+		<article class="Form">
+
+            <form action="{% url 'login:logout' %}" method="GET">
+
+                <input 
+                    type="submit" 
+                    value="ログアウト"
+                    class="Button"
+                >
+
+			</form>
+		</article>
+	</div>
 {% endblock %}
