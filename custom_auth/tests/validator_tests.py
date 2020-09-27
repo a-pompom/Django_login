@@ -1,5 +1,7 @@
 import pytest # type: ignore
 
+from django.core.exceptions import ValidationError
+
 from ..validator import *
 
 class TestValidatorMinLength:
@@ -13,13 +15,12 @@ class TestValidatorMinLength:
         pytest.param('日本語の長さ', 6, id='Japanese character')
         ]
     )
-    def test_最小文字数を満たすとTrueが返ること(self, value: str, length: int):
+    def test_最小文字数を満たすと例外が送出されないこと(self, value: str, length: int):
 
-        # WHEN
-        is_valid = is_valid_min_length(value, length)
-
-        # THEN
-        assert is_valid == True
+        try:
+            validate_min_length(value, length)
+        except ValidationError:
+            pytest.fail('invalid value')
 
     @pytest.mark.parametrize(
         'value,length',
@@ -29,13 +30,10 @@ class TestValidatorMinLength:
             pytest.param('これは文字です', 8, id='Jpanese String lack')
         ]
     )
-    def test_最小文字数を超過するとFalseが返ること(self, value: str, length: int):
+    def test_最小文字数を満たさないと例外が送出されること(self, value: str, length: int):
 
-        # WHEN
-        is_valid = is_valid_min_length(value, length)
-
-        # THEN
-        assert is_valid == False
+        with pytest.raises(ValidationError):
+            validate_min_length(value, length)
 
 class TestValidatorMaxLength:
     """ 最大文字長チェック """
@@ -48,13 +46,12 @@ class TestValidatorMaxLength:
         pytest.param('日本語の長さ', 6, id='Japanese character')
         ]
     )
-    def test_最大文字数を満たすとTrueが返ること(self, value: str, length: int):
+    def test_最大文字数を満たすと例外が送出されないこと(self, value: str, length: int):
+        try:
+            validate_max_length(value, length)
+        except ValidationError:
+            pytest.fail('invalid value')
 
-        # WHEN
-        is_valid = is_valid_max_length(value, length)
-
-        # THEN
-        assert is_valid == True
 
     @pytest.mark.parametrize(
         'value,length',
@@ -64,13 +61,11 @@ class TestValidatorMaxLength:
             pytest.param('これは文字です', 3, id='Jpanese String over')
         ]
     )
-    def test_最大文字数を超過するとFalseが返ること(self, value: str, length: int):
-
-        # WHEN
-        is_valid = is_valid_max_length(value, length)
+    def test_最大文字数を超過すると例外が送出されること(self, value: str, length: int):
 
         # THEN
-        assert is_valid == False
+        with pytest.raises(ValidationError):
+            validate_max_length(value, length)
 
 class TestValidatorAlphaNumeric:
     """ 文字種別チェック """
@@ -83,13 +78,12 @@ class TestValidatorAlphaNumeric:
             pytest.param('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789', id='All character'),
         ]
     )
-    def test_半角英数とハイフンアンダースコアを含む文字列を渡すとTrueが返ること(self, value: str):
+    def test_半角英数とハイフンアンダースコアを含む文字列を渡すと例外が送出されないこと(self, value: str):
+        try:
+            validate_alpha_numeric(value)
+        except ValidationError:
+            pytest.fail('invalid value')
 
-        # WHEN
-        is_valid = is_valid_alpha_numeric(value)
-
-        # THEN
-        assert is_valid == True
 
     @pytest.mark.parametrize(
         'value',
@@ -99,10 +93,8 @@ class TestValidatorAlphaNumeric:
             pytest.param('日本語文字列', id='Japanese character'),
         ]
     )
-    def test_指定文字種以外を渡すとFalseが返ること(self, value: str):
-
-        # WHEN
-        is_valid = is_valid_alpha_numeric(value)
+    def test_指定文字種以外を渡すと例外が送出されること(self, value: str):
 
         # THEN
-        assert is_valid == False
+        with pytest.raises(ValidationError):
+            validate_alpha_numeric(value)

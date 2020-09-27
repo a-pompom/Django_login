@@ -37,19 +37,18 @@ class TestSignUpForm:
     @pytest.mark.parametrize(
         'cleaned_username',
         [
-            pytest.param({'username': 'a-pompom105a'}, id='valid username'),
-            pytest.param({'username': '12345'}, id='Equal to valid min length'),
-            pytest.param({'username': 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdef'}, id='Equal to valid max length'),
+            pytest.param({'username': 'a-pompom105a', 'password': 'valid_password'}, id='valid username'),
+            pytest.param({'username': '12345', 'password': 'valid_password'}, id='Equal to valid min length'),
+            pytest.param({'username': 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdef', 'password': 'valid_password'}, id='Equal to valid max length'),
         ]
     )
     def test_Formへ有効なユーザ名を渡すとcleaned_dataへユーザ名が格納されること(self, cleaned_username: Dict[str,str]):
 
         # GIVEN
-        signup_form = SignUpForm()
+        signup_form = SignUpForm(cleaned_username)
 
         # WHEN
-        signup_form.cleaned_data = cleaned_username
-        signup_form.clean_username()
+        signup_form.is_valid()
 
         # THEN
         assert signup_form.cleaned_data['username'] == cleaned_username['username']
@@ -57,40 +56,38 @@ class TestSignUpForm:
     @pytest.mark.parametrize(
         'invalid_username',
         [
-            pytest.param({'username': 'a-pompom 105a'}, id='Invalid username'),
-            pytest.param({'username': '1234'}, id='Less than valid min length'),
-            pytest.param({'username': 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefg'}, id='More than valid max length'),
-            pytest.param({'username': 'a-pompom0107'}, id='Duplicate username'),
+            pytest.param({'username': 'a-pompom 105a', 'password': 'valid_password'}, id='Invalid username'),
+            pytest.param({'username': '1234', 'password': 'valid_password'}, id='Less than valid min length'),
+            pytest.param({'username': 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefg', 'password': 'valid_password'}, id='More than valid max length'),
+            pytest.param({'username': 'a-pompom0107', 'password': 'valid_password'}, id='Duplicate username'),
         ]
     )
     def test_SignUpFormへ無効なユーザ名を渡すとValidationErrorが送出されること(self, invalid_username: Dict[str,str], multiple_users):
 
         # GIVEN
-        signup_form = SignUpForm()
+        signup_form = SignUpForm(invalid_username)
+
+        # WHEN
+        actual = signup_form.is_valid()
 
         # THEN
-        with pytest.raises(ValidationError):
-            # WHEN
-            signup_form.cleaned_data = invalid_username
-            signup_form.clean_username()
-
+        assert actual == False
 
     @pytest.mark.parametrize(
-        'cleaned_password',
+        'invalid_password',
         [
-            pytest.param({'password': 'invalid password'}, id='Invalid Character Type'),
-            pytest.param({'password': 'min'}, id='Invalid min length'),
-            pytest.param({'password': 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890-_________________'}, id='Invalid max length'),
+            pytest.param({'password': 'invalid password', 'username': 'valid_username'}, id='Invalid Character Type'),
+            pytest.param({'password': 'min', 'username': 'valid_username'}, id='Invalid min length'),
+            pytest.param({'password': 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890-_________________', 'username': 'valid_username'}, id='Invalid max length'),
         ]
     )
-    def test_SignUpFormへ無効なパスワードを渡すとValidationErrorが送出されること(self, cleaned_password: Dict[str,str]):
+    def test_SignUpFormへ無効なパスワードを渡すとValidationErrorが送出されること(self, invalid_password: Dict[str,str]):
 
         # GIVEN
-        signup_form = SignUpForm({'username': 'mockUser', 'password': 'mockPassword'})
+        signup_form = SignUpForm(invalid_password)
         
-        # THEN
-        with pytest.raises(ValidationError):
-            # WHEN
-            signup_form.cleaned_data = cleaned_password
+        # WHEN
+        actual = signup_form.is_valid()
 
-            signup_form.clean_password()
+        # THEN
+        assert actual == False
